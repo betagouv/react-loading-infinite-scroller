@@ -6,7 +6,7 @@ import withQueryRouter from 'with-query-router'
 const REACHABLE_THRESHOLD = -10
 const UNREACHABLE_THRESHOLD = -10000
 
-class LoadingInfiniteScroll extends PureComponent {
+export class RawLoadingInfiniteScroll extends PureComponent {
   constructor() {
     super()
     this.state = {
@@ -133,18 +133,18 @@ class LoadingInfiniteScroll extends PureComponent {
   }
 }
 
-LoadingInfiniteScroll.defaultProps = {
+RawLoadingInfiniteScroll.defaultProps = {
   isLoading: false,
   ...InfiniteScroll.defaultProps
 }
 delete InfiniteScroll.defaultProps.loadMore
 
 
-LoadingInfiniteScroll.propTypes = {
+RawLoadingInfiniteScroll.propTypes = {
   isLoading: PropTypes.bool,
   query: PropTypes.object.isRequired,
   ...InfiniteScroll.propTypes
 }
-delete LoadingInfiniteScroll.propTypes.loadMore
+delete RawLoadingInfiniteScroll.propTypes.loadMore
 
-export default withQueryRouter(LoadingInfiniteScroll)
+export default withQueryRouter(RawLoadingInfiniteScroll)

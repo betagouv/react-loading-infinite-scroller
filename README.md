@@ -1,9 +1,7 @@
 # react-loading-infinite-scroller
 
-** EN CONSTRUCTION **
-Ce code est du code externalisé du https://github.com/betagouv/pass-culture-shared qui concentre un nombre d'utilités React Redux
-utilisé par les applications front du pass culture.
-Tant que les tests fonctionnels ne sont pas écrits, cette lib ne peut être considérée en production.
+[![CircleCI](https://circleci.com/gh/betagouv/react-loading-infinite-scroller/tree/master.svg?style=svg)](https://circleci.com/gh/betagouv/react-loading-infinite-scroller/tree/master)
+[![npm version](https://img.shields.io/npm/v/react-loading-infinite-scroller.svg?style=flat-square)](https://npmjs.org/package/react-loading-infinite-scroller)
 
 ## Basic Usage
 

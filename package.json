@@ -8,7 +8,7 @@
     "react-infinite-scroller": "^1.2.4",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.0",
-    "with-query-router": "0.1.1"
+    "with-query-router": "^1.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.1",
@@ -54,17 +54,22 @@
     "infinite",
     "scroller"
   ],
+  "license": "MIT",
   "main": "lib/index.js",
   "name": "react-loading-infinite-scroller",
   "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/betagouv/react-loading-infinite-scroller"
+  },
   "scripts": {
     "compile": "rm -rf lib && babel --plugins transform-class-properties,transform-object-rest-spread --presets env,react -d lib/ src/",
     "postinstall": "if [ -d \"src/\" ]; then npm run compile; fi",
     "precommit": "./precommit.sh",
     "prettier": "$(yarn bin)/prettier --write 'src/**/*.js'",
     "prepublish": "npm run compile",
-    "watch": "nodemon --watch src --exec \"npm run compile\"",
-    "test:unit": "yarn jest --env=jsdom ./src"
+    "test": "yarn jest --env=jsdom ./src",
+    "watch": "nodemon --watch src --exec \"npm run compile\""
   },
-  "version": "0.1.0"
+  "version": "1.1.1"
 }
