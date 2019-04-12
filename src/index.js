@@ -147,4 +147,4 @@ RawLoadingInfiniteScroll.propTypes = {
 }
 delete RawLoadingInfiniteScroll.propTypes.loadMore
 
-export default withQueryRouter(RawLoadingInfiniteScroll)
+export default withQueryRouter()(RawLoadingInfiniteScroll)
