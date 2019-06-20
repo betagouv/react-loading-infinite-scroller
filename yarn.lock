@@ -7642,9 +7642,10 @@ widest-line@^2.0.0:
   dependencies:
     string-width "^2.1.1"
 
-with-query-router@3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/with-query-router/-/with-query-router-3.0.0.tgz#57f98fb04036c7727f3e05cb90a398478fb50272"
+with-query-router@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/with-query-router/-/with-query-router-3.2.0.tgz#a05c8d786a4dc1e56e793e056f897f3790fa4309"
+  integrity sha512-nTunP5d2L1F2sFKIaN46xwpcKM5wIDcvu7DTITfEfP+7BGIAJct4yXDYp8vSXQLnC+gDP+LVQvFUbtTARy4xUg==
   dependencies:
     classnames "2.2.5"
     eslint "^5.8.0"
