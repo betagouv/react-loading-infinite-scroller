@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
-import withQueryRouter from 'with-query-router'
+import withQuery from 'with-react-query'
 
 const REACHABLE_THRESHOLD = -10
 const UNREACHABLE_THRESHOLD = -10000
@@ -24,7 +24,7 @@ export class RawLoadingInfiniteScroll extends PureComponent {
   componentDidUpdate (prevProps) {
     const { isLoading, query } = this.props
     const { page } = this.state
-    const queryParams = query.parse()
+    const queryParams = query.getParams()
 
     if (!isLoading && prevProps.isLoading) {
       this.handleResetThreshold()
@@ -54,16 +54,17 @@ export class RawLoadingInfiniteScroll extends PureComponent {
   }
 
   handleResetPage = () => {
-    const { query } = this.props
-    const queryParams = query.parse()
+    const { history, query } = this.props
+    const queryParams = query.getParams()
     if (queryParams.page) {
-      query.change({ page: null })
+      const resetSearch = query.getSearchFromUpdate({ page: null })
+      history.push(resetSearch)
     }
   }
 
   handleResetPageHasBeenDone = () => {
     const { query } = this.props
-    const queryParams = query.parse()
+    const queryParams = query.getParams()
     const { hasResetPage } = this.state
 
     if (hasResetPage) {
@@ -76,14 +77,17 @@ export class RawLoadingInfiniteScroll extends PureComponent {
   }
 
   loadMore = page => {
-    const { isLoading, query } = this.props
+    const { history, isLoading, query } = this.props
     if (isLoading) {
       return
     }
 
     this.setState(
       { page, threshold: UNREACHABLE_THRESHOLD },
-      () => query.change({ page }, { historyMethod: 'replace' })
+      () => {
+        const loadSearch = query.getSearchFromUpdate({ page })
+        history.replace(loadSearch)
+      }
     )
   }
 
@@ -137,14 +141,20 @@ RawLoadingInfiniteScroll.defaultProps = {
   isLoading: false,
   ...InfiniteScroll.defaultProps
 }
-delete InfiniteScroll.defaultProps.loadMore
+delete RawLoadingInfiniteScroll.defaultProps.loadMore
 
 
 RawLoadingInfiniteScroll.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    replace: PropTypes.func.isRequired
+  }).isRequired,
   isLoading: PropTypes.bool,
-  query: PropTypes.object.isRequired,
+  query: PropTypes.shape({
+    page: PropTypes.string
+  }).isRequired,
   ...InfiniteScroll.propTypes
 }
 delete RawLoadingInfiniteScroll.propTypes.loadMore
 
-export default withQueryRouter()(RawLoadingInfiniteScroll)
+export default withQuery()(RawLoadingInfiniteScroll)

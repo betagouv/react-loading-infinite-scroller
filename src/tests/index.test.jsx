@@ -9,7 +9,7 @@ describe('RawLoadingInfiniteScroll', () => {
       // given
       const props = {
         query: {
-          parse: () => ({})
+          getParams: () => ({})
         },
       }
 
