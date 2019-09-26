@@ -76,8 +76,8 @@ export class RawLoadingInfiniteScroll extends PureComponent {
   }
 
   loadMore = page => {
-    const { isLoading, query } = this.props
-    if (isLoading) {
+    const { hasMore, isLoading, query } = this.props
+    if (isLoading || !hasMore) {
       return
     }
 
