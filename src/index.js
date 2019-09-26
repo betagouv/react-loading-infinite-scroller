@@ -13,15 +13,15 @@ export class LoadingInfiniteScroll extends PureComponent {
       hasResetPage: false,
       page: null,
       resetCount: 0,
-      threshold: REACHABLE_THRESHOLD
+      threshold: REACHABLE_THRESHOLD,
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.handleResetPage()
   }
 
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const { isLoading } = this.props
     const { page } = this.state
     const queryParams = parse(window.location.search)
@@ -38,13 +38,12 @@ export class LoadingInfiniteScroll extends PureComponent {
     this.handleResetPageHasBeenDone()
   }
 
-
   handleResetScroll = () => {
     const { hasResetPage } = this.state
     if (hasResetPage) {
       this.setState(({ resetCount }) => ({
         page: null,
-        resetCount: resetCount + 1
+        resetCount: resetCount + 1,
       }))
     }
   }
@@ -80,17 +79,13 @@ export class LoadingInfiniteScroll extends PureComponent {
       return
     }
 
-    this.setState(
-      { page, threshold: UNREACHABLE_THRESHOLD },
-      () => handlePageChange(page)
+    this.setState({ page, threshold: UNREACHABLE_THRESHOLD }, () =>
+      handlePageChange(page)
     )
   }
 
   render() {
-    const {
-      children,
-      ...ReactInfiniteScrollerProps
-    } = this.props
+    const { children, ...ReactInfiniteScrollerProps } = this.props
     const {
       className,
       element,
@@ -108,9 +103,8 @@ export class LoadingInfiniteScroll extends PureComponent {
       return null
     }
 
-    const thresholdDependingOnChildren = (children && children.length)
-      ? threshold
-      : UNREACHABLE_THRESHOLD
+    const thresholdDependingOnChildren =
+      children && children.length ? threshold : UNREACHABLE_THRESHOLD
 
     return (
       <InfiniteScroll
@@ -133,19 +127,19 @@ export class LoadingInfiniteScroll extends PureComponent {
 
 LoadingInfiniteScroll.defaultProps = {
   isLoading: false,
-  ...InfiniteScroll.defaultProps
+  ...InfiniteScroll.defaultProps,
 }
 delete InfiniteScroll.defaultProps.loadMore
 
 LoadingInfiniteScroll.propTypes = {
   children: PropTypes.oneOfType([
-        PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
-    ]).isRequired,
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
   handlePageChange: PropTypes.func.isRequired,
   handlePageReset: PropTypes.func.isRequired,
   hasMore: PropTypes.bool,
-  isLoading: PropTypes.bool
+  isLoading: PropTypes.bool,
 }
 
 export default LoadingInfiniteScroll

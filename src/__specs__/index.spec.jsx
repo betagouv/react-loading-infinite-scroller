@@ -9,7 +9,7 @@ describe('test LoadingInfiniteScroll', () => {
       // given
       const props = {
         handlePageChange: jest.fn(),
-        handlePageReset: jest.fn()
+        handlePageReset: jest.fn(),
       }
 
       // when
