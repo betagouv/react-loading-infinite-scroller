@@ -145,10 +145,7 @@ LoadingInfiniteScroll.propTypes = {
   handlePageChange: PropTypes.func.isRequired,
   handlePageReset: PropTypes.func.isRequired,
   hasMore: PropTypes.bool,
-  isLoading: PropTypes.bool,
-  location: PropTypes.shape({
-    search: PropTypes.string
-  }).isRequired
+  isLoading: PropTypes.bool
 }
 
 export default LoadingInfiniteScroll
