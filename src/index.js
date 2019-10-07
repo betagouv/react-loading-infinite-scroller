@@ -1,30 +1,30 @@
 import PropTypes from 'prop-types'
+import { parse } from 'query-string'
 import React, { PureComponent } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
-import withQueryRouter from 'with-query-router'
 
 const REACHABLE_THRESHOLD = -10
 const UNREACHABLE_THRESHOLD = -10000
 
-export class RawLoadingInfiniteScroll extends PureComponent {
+export class LoadingInfiniteScroll extends PureComponent {
   constructor() {
     super()
     this.state = {
       hasResetPage: false,
       page: null,
       resetCount: 0,
-      threshold: REACHABLE_THRESHOLD
+      threshold: REACHABLE_THRESHOLD,
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.handleResetPage()
   }
 
-  componentDidUpdate (prevProps) {
-    const { isLoading, query } = this.props
+  componentDidUpdate(prevProps) {
+    const { isLoading } = this.props
     const { page } = this.state
-    const queryParams = query.parse()
+    const queryParams = parse(window.location.search)
 
     if (!isLoading && prevProps.isLoading) {
       this.handleResetThreshold()
@@ -38,13 +38,12 @@ export class RawLoadingInfiniteScroll extends PureComponent {
     this.handleResetPageHasBeenDone()
   }
 
-
   handleResetScroll = () => {
     const { hasResetPage } = this.state
     if (hasResetPage) {
       this.setState(({ resetCount }) => ({
         page: null,
-        resetCount: resetCount + 1
+        resetCount: resetCount + 1,
       }))
     }
   }
@@ -54,16 +53,15 @@ export class RawLoadingInfiniteScroll extends PureComponent {
   }
 
   handleResetPage = () => {
-    const { query } = this.props
-    const queryParams = query.parse()
+    const { handlePageReset } = this.props
+    const queryParams = parse(window.location.search)
     if (queryParams.page) {
-      query.change({ page: null })
+      handlePageReset()
     }
   }
 
   handleResetPageHasBeenDone = () => {
-    const { query } = this.props
-    const queryParams = query.parse()
+    const queryParams = parse(window.location.search)
     const { hasResetPage } = this.state
 
     if (hasResetPage) {
@@ -76,23 +74,18 @@ export class RawLoadingInfiniteScroll extends PureComponent {
   }
 
   loadMore = page => {
-    const { isLoading, query } = this.props
-    if (isLoading) {
+    const { handlePageChange, hasMore, isLoading } = this.props
+    if (isLoading || !hasMore) {
       return
     }
 
-    this.setState(
-      { page, threshold: UNREACHABLE_THRESHOLD },
-      () => query.change({ page }, { historyMethod: 'replace' })
+    this.setState({ page, threshold: UNREACHABLE_THRESHOLD }, () =>
+      handlePageChange(page)
     )
   }
 
   render() {
-    const {
-      children,
-      query,
-      ...ReactInfiniteScrollerProps
-    } = this.props
+    const { children, ...ReactInfiniteScrollerProps } = this.props
     const {
       className,
       element,
@@ -102,7 +95,7 @@ export class RawLoadingInfiniteScroll extends PureComponent {
       useWindow,
     } = ReactInfiniteScrollerProps
     const { hasResetPage, resetCount, threshold } = this.state
-    const queryParams = query.parse()
+    const queryParams = parse(window.location.search)
 
     const pageStart = parseInt(queryParams.page || 1, 10)
 
@@ -110,9 +103,8 @@ export class RawLoadingInfiniteScroll extends PureComponent {
       return null
     }
 
-    const thresholdDependingOnChildren = (children && children.length)
-      ? threshold
-      : UNREACHABLE_THRESHOLD
+    const thresholdDependingOnChildren =
+      children && children.length ? threshold : UNREACHABLE_THRESHOLD
 
     return (
       <InfiniteScroll
@@ -121,8 +113,8 @@ export class RawLoadingInfiniteScroll extends PureComponent {
         getScrollParent={getScrollParent}
         hasMore={hasMore}
         key={resetCount}
-        loader={loader}
         loadMore={this.loadMore}
+        loader={loader}
         pageStart={pageStart}
         threshold={thresholdDependingOnChildren}
         useWindow={useWindow}
@@ -133,18 +125,21 @@ export class RawLoadingInfiniteScroll extends PureComponent {
   }
 }
 
-RawLoadingInfiniteScroll.defaultProps = {
+LoadingInfiniteScroll.defaultProps = {
   isLoading: false,
-  ...InfiniteScroll.defaultProps
+  ...InfiniteScroll.defaultProps,
 }
 delete InfiniteScroll.defaultProps.loadMore
 
-
-RawLoadingInfiniteScroll.propTypes = {
+LoadingInfiniteScroll.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]).isRequired,
+  handlePageChange: PropTypes.func.isRequired,
+  handlePageReset: PropTypes.func.isRequired,
+  hasMore: PropTypes.bool,
   isLoading: PropTypes.bool,
-  query: PropTypes.object.isRequired,
-  ...InfiniteScroll.propTypes
 }
-delete RawLoadingInfiniteScroll.propTypes.loadMore
 
-export default withQueryRouter()(RawLoadingInfiniteScroll)
+export default LoadingInfiniteScroll

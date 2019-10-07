@@ -1,23 +1,22 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { RawLoadingInfiniteScroll } from '../index'
+import { LoadingInfiniteScroll } from '../index'
 
-describe('RawLoadingInfiniteScroll', () => {
+describe('test LoadingInfiniteScroll', () => {
   describe('snapshot', () => {
     it('should match snapshot', () => {
       // given
       const props = {
-        query: {
-          parse: () => ({})
-        },
+        handlePageChange: jest.fn(),
+        handlePageReset: jest.fn(),
       }
 
       // when
       const wrapper = shallow(
-        <RawLoadingInfiniteScroll {...props}>
+        <LoadingInfiniteScroll {...props}>
           <div />
-        </RawLoadingInfiniteScroll>
+        </LoadingInfiniteScroll>
       )
 
       // then
